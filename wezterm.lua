@@ -5,7 +5,7 @@ local os = require('lua.os')
 
 local config = {
   font = wezterm.font("JetBrainsMono Nerd Font"),
-  font_size = os.get({ linux = 20.0, macos = 14.0, }),
+  font_size = os.get({ linux = 22.0, macos = 14.0, }),
   max_fps = os.get({ linux = 165, macos = 60, }),
   colors = rosepine.colors(),
   window_frame = rosepine.window_frame(),

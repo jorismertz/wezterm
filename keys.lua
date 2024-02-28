@@ -1,32 +1,75 @@
 local wezterm = require('wezterm')
+local act = wezterm.action
 
-return {
+local keys = {
   {
     key = "t",
-    mods = "CTRL",
-    action = wezterm.action {
+    mods = "ALT",
+    action = act {
       SpawnTab = "CurrentPaneDomain",
     }
   },
   {
-    key = "q",
-    mods = "CTRL",
-    action = wezterm.action {
-      CloseCurrentTab = {
+    key = "w",
+    mods = "ALT",
+    action = act {
+      CloseCurrentPane = {
         confirm = false
       }
     }
   },
   {
     key = "i",
-    mods = "CTRL|SHIFT",
-    action = wezterm.action.ShowDebugOverlay
-  }
+    mods = "ALT",
+    action = act.ShowDebugOverlay
+  },
+  {
+    key = "s",
+    mods = "ALT",
+    action = act.SplitVertical {
+      domain = "CurrentPaneDomain"
+    }
+  },
+  {
+    key = "v",
+    mods = "ALT",
+    action = act.SplitHorizontal {
+      domain = "CurrentPaneDomain"
+    }
+  },
+  {
+    key = 'h',
+    mods = 'ALT',
+    action = act.ActivatePaneDirection 'Left',
+  },
+  {
+    key = 'l',
+    mods = 'ALT',
+    action = act.ActivatePaneDirection 'Right',
+  },
+  {
+    key = 'k',
+    mods = 'ALT',
+    action = act.ActivatePaneDirection 'Up',
+  },
+  {
+    key = 'j',
+    mods = 'ALT',
+    action = act.ActivatePaneDirection 'Down',
+  },
+  {
+    key = 'z',
+    mods = 'ALT',
+    action = act.TogglePaneZoomState,
+  },
 }
+
 for i = 1, 8 do
-	table.insert(keys, {
-		key = tostring(i),
-		mods = "ALT",
-		action = wezterm.action.ActivateTab(i - 1),
-	})
+  table.insert(keys, {
+    key = tostring(i),
+    mods = "ALT",
+    action = wezterm.action.ActivateTab(i - 1),
+  })
 end
+
+return keys
