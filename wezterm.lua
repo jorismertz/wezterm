@@ -1,11 +1,28 @@
 local wezterm = require("wezterm")
-local keys = require("keys")
 local utils = require("lua.utils")
 local rosepine = require("lua.theme")
 local os = require("lua.os")
+local keys = require("lua.keys")
+local act = wezterm.action
+
+keys.builtins.adjustPaneSize("CTRL|ALT", 5)
+keys.builtins.activatePaneDirection("SHIFT|ALT")
+keys.builtins.activateTab("ALT", 1, 8)
+
+keys.mod("ALT", {
+	{ key = "t", action = act({ SpawnTab = "CurrentPaneDomain" }) },
+	{ key = "w", action = act({ CloseCurrentPane = { confirm = false } }) },
+	{ key = "i", action = act.ShowDebugOverlay },
+	{ key = "s", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+	{ key = "v", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+	{ key = "z", action = act.TogglePaneZoomState },
+})
+
+print(keys.value)
 
 local config = {
 	font = wezterm.font("JetBrainsMono Nerd Font"),
+	leader = { key = "a", mods = "ALT" },
 	font_size = os.get({ linux = 22.0, macos = 14.0 }),
 	max_fps = os.get({ linux = 165, macos = 60 }),
 	colors = rosepine.colors(),
@@ -13,7 +30,7 @@ local config = {
 	use_fancy_tab_bar = false,
 	tab_bar_at_bottom = true,
 	hide_tab_bar_if_only_one_tab = true,
-	keys = keys,
+	keys = keys.value,
 }
 
 local max_title_length = 16
