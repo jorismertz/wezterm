@@ -9,63 +9,65 @@ keys.builtins.adjustPaneSize("CTRL|ALT", 5)
 keys.builtins.activatePaneDirection("SHIFT|ALT")
 keys.builtins.activateTab("ALT", 1, 8)
 
+keys.mod("ALT|SHIFT", {
+  { key = "i", action = act.ShowDebugOverlay },
+})
 keys.mod("ALT", {
-	{ key = "t", action = act({ SpawnTab = "CurrentPaneDomain" }) },
-	{ key = "w", action = act({ CloseCurrentPane = { confirm = false } }) },
-	{ key = "i", action = act.ShowDebugOverlay },
-	{ key = "s", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
-	{ key = "v", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
-	{ key = "z", action = act.TogglePaneZoomState },
+  { key = "t", action = act({ SpawnTab = "CurrentPaneDomain" }) },
+  { key = "w", action = act({ CloseCurrentPane = { confirm = false } }) },
+  { key = "s", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+  { key = "v", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+  { key = "z", action = act.TogglePaneZoomState },
 })
 
 print(keys.value)
 
 local config = {
-	font = wezterm.font("JetBrainsMono Nerd Font"),
-	leader = { key = "a", mods = "ALT" },
-	font_size = os.get({ linux = 22.0, macos = 14.0 }),
-	max_fps = os.get({ linux = 165, macos = 60 }),
-	colors = rosepine.colors(),
-	window_frame = rosepine.window_frame(),
-	use_fancy_tab_bar = false,
-	tab_bar_at_bottom = true,
-	hide_tab_bar_if_only_one_tab = true,
-	keys = keys.value,
+  font = wezterm.font("JetBrainsMono Nerd Font"),
+  leader = { key = "a", mods = "ALT" },
+  font_size = os.get({ linux = 22.0, macos = 14.0 }),
+  max_fps = os.get({ linux = 165, macos = 60 }),
+  colors = rosepine.colors(),
+  window_frame = rosepine.window_frame(),
+  use_fancy_tab_bar = false,
+  tab_bar_at_bottom = true,
+  hide_tab_bar_if_only_one_tab = true,
+  keys = keys.value,
 }
 
 local max_title_length = 16
 local title_padding = 1
 
 local function center_title(title)
-	local padding = (max_title_length - title_padding * 2) - utils.len(title)
-	local left_padding = math.floor(padding / 2)
-	local right_padding = math.ceil(padding / 2)
+  local padding = (max_title_length - title_padding * 2) - utils.len(title)
+  local left_padding = math.floor(padding / 2)
+  local right_padding = math.ceil(padding / 2)
 
-	return string.rep(" ", left_padding) .. title .. string.rep(" ", right_padding)
+  return string.rep(" ", left_padding) .. title .. string.rep(" ", right_padding)
 end
 
 local function tab_title(tab_info)
-	local title = tab_info.tab_title
-	if title and #title > 0 then
-		return title
-	end
+  local title = tab_info.tab_title
+  if title and #title > 0 then
+    return title
+  end
 
-	local split = utils.split(tab_info.active_pane.title, " ")
-	return string.sub(split[1], 1, max_title_length - title_padding * 2)
+  local split = utils.split(tab_info.active_pane.title, " ")
+  return string.sub(split[1], 1, max_title_length - title_padding * 2)
 end
 
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-	local title = tab_title(tab)
-	if tab.is_active then
-		return {
-			{ Text = center_title(title) },
-			{ Background = { Color = rosepine.palette.overlay } },
-		}
-	else
-		return {
-			{ Text = center_title(title) },
-		}
-	end
+  local title = tab_title(tab)
+  if tab.is_active then
+    return {
+      { Text = center_title(title) },
+      { Background = { Color = rosepine.palette.overlay } },
+    }
+  else
+    return {
+      { Text = center_title(title) },
+    }
+  end
 end)
 
 return config
